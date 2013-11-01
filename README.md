@@ -51,6 +51,7 @@ One can also walk the web in the opposite direction by using .<PREDICATE so to d
     zip[.<address.firstname = 'james']
 
 This is the full recursive tree
+
     Query : Trail
     Trail : Trail_Item Trail
     Trail : Trail_Item

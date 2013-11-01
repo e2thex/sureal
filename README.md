@@ -1,10 +1,10 @@
-SUReal - Sureal Users Restfully Access Lists
+SUReAL - Sureal Users Restfully Access Lists
 ========
 
 Sureal is a restful api for access list of arbtrary data.  The data paradam is basicily triplets of subject predicate and object with weight.
 
 ReSTful API
------------
+=========
 So in a system if one wanted to access Joe's last name from the contacts datastore they might ask for
 
 /contacts/joe/lastname
@@ -48,39 +48,39 @@ One can also walk the web in the oppiste direction by useing .<PREDICATE so to d
 zip[.<address.firstname = 'james']
 
 This is the full recusive tree
- Query : Trail
- Trail : Trail_Item Trail
- Trail : Trail_Item
- Trail_Item : getFromPredicateValue
- Trail_Item : getFromPredicateWhere
- Trail_Item : getPredicate
- Trail_Item : [Where_Item]
- Trail_Item : getSelf
- getSelf : VALUE
- getFromPredicateValue : ."STRING"
- getFromPredicateValue : .<"STRING"
- getFromPredicateValue : .>"STRING"
- getFromPredicateValue : .><"STRING"
- getFromPredicateWhere : .{Where_Item}
- getFromPredicateWhere : .>{Where_Item}
- getFromPredicateWhere : .<{Where_Item}
- getFromPredicateWhere : .><{Where_Item}
- getPredicate : @
- WhereClause : trailExists
- WhereClause : trailCompare
- WhereClause : WhereClause AND WhereClause
- WhereClause : WhereClause OR WhereClause
- trailExists : Trail EXISTS
- trailCompare : Trail = "STRING"
- trailCompare : Trail < "STRING"
- trailCompare : Trail > "STRING"
- trailCompare : Trail != "STRING"
- trailCompare : Trail CONTAINS "STRING"
- trailCompare : = "STRING"
- trailCompare : < "STRING"
- trailCompare : > "STRING"
- trailCompare : != "STRING"
- trailCompare : CONTAINS "STRING"
+    Query : Trail
+    Trail : Trail_Item Trail
+    Trail : Trail_Item
+    Trail_Item : getFromPredicateValue
+    Trail_Item : getFromPredicateWhere
+    Trail_Item : getPredicate
+    Trail_Item : [Where_Item]
+    Trail_Item : getSelf
+    getSelf : VALUE
+    getFromPredicateValue : ."STRING"
+    getFromPredicateValue : .<"STRING"
+    getFromPredicateValue : .>"STRING"
+    getFromPredicateValue : .><"STRING"
+    getFromPredicateWhere : .{Where_Item}
+    getFromPredicateWhere : .>{Where_Item}
+    getFromPredicateWhere : .<{Where_Item}
+    getFromPredicateWhere : .><{Where_Item}
+    getPredicate : @
+    WhereClause : trailExists
+    WhereClause : trailCompare
+    WhereClause : WhereClause AND WhereClause
+    WhereClause : WhereClause OR WhereClause
+    trailExists : Trail EXISTS
+    trailCompare : Trail = "STRING"
+    trailCompare : Trail < "STRING"
+    trailCompare : Trail > "STRING"
+    trailCompare : Trail != "STRING"
+    trailCompare : Trail CONTAINS "STRING"
+    trailCompare : = "STRING"
+    trailCompare : < "STRING"
+    trailCompare : > "STRING"
+    trailCompare : != "STRING"
+    trailCompare : CONTAINS "STRING"
 
 Transactions
 ============

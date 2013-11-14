@@ -65,4 +65,64 @@ sureal.path.is_a = function is_aPath(obj) {
   return false;
 };
 
-exports.sureal = sureal;
+
+
+sureal.data = {}
+sureal.data.request = {}
+/**
+ * Instructions are a recurive tree of items that allow one to describe
+ * a query for a node in a data web. 
+ *
+ * Here is the tree of recursive instructions
+ *
+ * instruction : intersection
+ * instruction : lookup
+ * intersection: instruction instruction
+ * lookup      : lookup_part lookup_part lookup_part lookup_part
+ * lookup_part : variable
+ * lookup_part : {operator : , value }
+*/
+sureal.data.request.instruction = {}
+sureal.data.request.instruction.variable = function(counter) {
+  var that = {}
+  that.counter = typeof counter === 'undefined' ? sureal.data.request.instruction.variable.counter(): counter;
+  that.name = that.counter.count;
+  that.final = that.name === 0 ;
+  
+  that.next = function() {
+    this.counter.count ++;
+    return sureal.data.request.instruction.variable(this.counter);
+  }
+  return that;
+}
+sureal.data.request.instruction.variable.counter = function() {
+  var that = {}
+  that.count = 0;
+  return that;
+}
+sureal.data.request.instruction.lookupPart = function(op, value) {
+  var that = {}
+  that.operator = op;
+  that.value = value;
+  return that;
+}
+sureal.data.request.instruction.lookup = function(subject, predicate, object, identifier) {
+  var that = {}
+  that.subject = subject;
+  that.predicate = predicate;
+  that.object = object;
+  that.identifier = identifier;
+  that.type = 'LOOKUP';
+  return that;
+}
+/*
+sureal.data.request.instruction.intersect = function(lhs, rhs) {
+  var that = {}
+  that.lhs = lhs;
+  that.rhs = rhs;
+  that.type = 'INTERSECT';
+  return that;
+  
+}
+
+*/

@@ -1,2 +1,4 @@
 --require should
+--require sinon
+--require sureal.js
 --reporter spec

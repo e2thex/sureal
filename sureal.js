@@ -3,7 +3,87 @@ sureal.rest = {};
 sureal.rest.request = {};
 sureal.rest.request.get = function requestGet(path, queryString) {
   var that = {}
-  that.path = (typeof path == 'string') ? sureal.path(path) : path;
+  //that.path = (typeof path == 'string') ? sureal.path(path) : path;
+  that.path = path;
+  var parts = path.split("/");
+  that.subject = parts[0];
+  that.predicate = parts[1] ? parts[1] : false;
+  that.identifier = typeof parts[2] !== 'undefined' ? parts[2] : false;
+  that.value = that.predicate ? that.predicate : that.subject;
+  that.methods = {
+    '1'    : ["DELETE", "GET", "PUT"], //subject
+    '2'  : ["GET", "POST"], //predicate 
+    '3' : ["DELETE", "GET", "POST", "PUT"] // identifier
+  }[parts.length];
+
+  // Method for querying a data source for all attributes of a subject
+  that.getAttributes = function(store, subject) {
+    var variable = sureal.data.request.instruction.variable();
+    return store.query(
+      sureal.data.request.instruction.lookup( 
+        sureal.data.request.instruction.lookupPart("=", subject),
+        variable,
+        variable.next(),
+        variable.next()
+      )
+    ).results;
+  };
+  that.execute = function execute(store) {
+    var variable = sureal.data.request.instruction.variable();
+    var variable1 = variable.next();
+    var variable2 = variable.next();
+    
+    var data = store.query(
+      sureal.data.request.instruction.lookup( 
+        sureal.data.request.instruction.lookupPart("=", that.subject),
+        this.predicate ? sureal.data.request.instruction.lookupPart("=", that.predicate) : variable,
+        this.identifier ? variable : variable1,
+        this.identifier ?  sureal.data.request.instruction.lookupPart("=", that.identifier) : this.predicate ? variable : variable2
+      )
+    );
+    this.results = typeof data !=='undefined' ? data.results : undefined;
+
+    if(this.identifier) {
+      typeof this.results !== 'undefined' ?
+        this.value = this.results[0] :
+        '';
+    }
+    var path = this.path;
+    return {
+      uri:this.path,
+      value: this.value,
+      children: this.parseChildrenFromData(),
+      methods:this.methods
+    };
+  };
+  /**
+   * Heler function for converting return data to child data
+   */
+  that.parseChildrenFromData = function() {
+    //if we have no data then no return
+    if(typeof this.results === 'undefined') {
+      return [];
+    }
+    // if we have a predicate then we need to sort
+    if(this.identifier) {
+      return [];
+    }
+    if(this.predicate) {
+      this.results.sort(function(a,b) {
+        return a.order < b.order ? -1 :( a.order>b.order ?1 :0);
+      });
+    }
+    return this.results.map(this.parseChildFromData, this);
+  }
+  that.parseChildFromData = function(item) {
+    if(that.predicate) {
+     return {value:item.object, uri:this.path +"/"+ item.identifier};
+      
+    }
+    else {
+     return {value:item, uri:this.path +"/"+ item};
+    }
+  };
   return that;
 }
 

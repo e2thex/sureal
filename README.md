@@ -15,7 +15,7 @@ But if they wanted to access his 3 child they could access
 
 This why one can have a way to consistently get back order data.  
 
-If one wants to add Add a new child at the top of the list they would submit a PUT to
+If one wants to add Add a new child at the top of the list they would submit a POST to
 
     /contact/joe/child
 
@@ -23,7 +23,7 @@ at the end of the list
 
     /contact/joe/child/end
 
-to update a child they would to a POST to the child wanted
+to update a child they would to a PUT to the child wanted
 
     /contact/joe/child/2
 
@@ -91,8 +91,8 @@ Transactions
 
 Each transaction is record as a triplet update. such as
 
-    PUT: NULL -> (joe, child, sally, 596747395739593)
-    POST: (joe, child, sally, 596747395739593) -> (joe, child, sal, 596747395739593)
+    POST: NULL -> (joe, child, sally, 596747395739593)
+    PUT: (joe, child, sally, 596747395739593) -> (joe, child, sal, 596747395739593)
     DELETE  (joe, child, sal, 596747395739593) -> NULL
 
 each of this transaction can be stored with a time stamp.

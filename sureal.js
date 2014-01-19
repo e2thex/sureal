@@ -11,7 +11,7 @@ sureal.rest.request.get = function requestGet(path, queryString) {
   that.identifier = typeof parts[2] !== 'undefined' ? parts[2] : false;
   that.value = that.predicate ? that.predicate : that.subject;
   that.methods = {
-    '1'    : ["DELETE", "GET", "PUT"], //subject
+    '1'    : ["DELETE", "GET"], //subject
     '2'  : ["GET", "POST"], //predicate 
     '3' : ["DELETE", "GET", "POST", "PUT"] // identifier
   }[parts.length];
@@ -86,6 +86,11 @@ sureal.rest.request.get = function requestGet(path, queryString) {
   };
   return that;
 }
+sureal.rest.request.put = function requestGet(path, data) {
+  var that = {}
+  that.execute = function requestPutExecute(store) {}
+  return that;
+};
 
 sureal.rest.response = {};
 sureal.rest.response.validate = function responseValidate(response) {
@@ -180,10 +185,11 @@ sureal.data.request.instruction.variable.counter = function() {
   that.count = 0;
   return that;
 }
-sureal.data.request.instruction.lookupPart = function(op, value) {
+sureal.data.request.instruction.lookupPart = function(op, value, variable) {
   var that = {}
   that.operator = op;
   that.value = value;
+  that.variable = variable;
   return that;
 }
 sureal.data.request.instruction.lookup = function(subject, predicate, object, identifier) {

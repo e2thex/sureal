@@ -42,14 +42,20 @@ describe("sureal.data.request.instruction", function() {
     it("should be a function", function() {
       sureal.data.request.instruction.lookupPart.should.be.type('function');
     });
-    var p = sureal.data.request.instruction.lookupPart("=", "bob");
+    var v = sureal.data.request.instruction.variable();
+    var p = sureal.data.request.instruction.lookupPart("=", "bob", v);
     it("should return an object with a operator property matching the first param", function() {
         p.should.have.property("operator");
         p.operator.should.equal('=');
     });
-    it("should return an object with a value property matching the second param");
+    it("should return an object with a value property matching the second param", function() {
         p.should.have.property("value");
         p.value.should.equal('bob');
+    });
+    it("should return an object with a variable property matching the third param", function() {
+        p.should.have.property("variable");
+        p.variable.should.equal(v);
+    });
   });
   describe(".lookup", function() {
     it("should be a function", function() {

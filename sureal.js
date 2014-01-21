@@ -135,7 +135,7 @@ sureal.path = function Path(path) {
   var that = {};
   that.predicate = parts[1] ? parts[1] : '';
   that.subject = parts[0] ? parts[0] : '';
-  that.position = parts[2] ? parts[2] : that.subject ? 0 :'';
+  that.identifier = parts[2] ? parts[2] : false;
   return that;
 };
 

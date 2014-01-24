@@ -88,7 +88,28 @@ sureal.rest.request.get = function requestGet(path, queryString) {
 }
 sureal.rest.request.put = function requestGet(path, data) {
   var that = {}
-  that.execute = function requestPutExecute(store) {}
+  that.triplet = sureal.path(path);
+  that.triplet.object = data;
+  that.execute = function requestPutExecute(store) {
+    var variable = sureal.data.request.instruction.variable();
+    
+    var data = store.update(
+      sureal.data.request.instruction.lookup( 
+        variable.next(),
+        variable.next(),
+        variable.next(),
+        sureal.data.request.instruction.lookupPart("=", this.triplet.identifier, variable)
+      ),
+      this.triplet
+    );
+    var triplet = data.results[0].to;
+    return {
+      uri:triplet.subject +"/"+triplet.predicate+"/"+triplet.identifier,
+      value: triplet.object,
+      children: [],
+      methods:["DELETE", "GET", "POST", "PUT"]
+    }
+  }
   return that;
 };
 

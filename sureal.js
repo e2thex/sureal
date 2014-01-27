@@ -1,3 +1,11 @@
+/**
+ * Extend all object with a validate funtion
+ */
+Object.prototype.surealValidate = function ObjectPrototypeSurealValidate(validator) {
+  validator(this);
+  return this;
+}
+
 sureal = {};
 sureal.rest = {};
 sureal.rest.request = {};
@@ -183,8 +191,13 @@ sureal.rest.request.delete = function requestGet(path) {
   return that;
 }
 
-sureal.path = function Path(path) {
-  
+/**
+ * Create a path object
+ *
+ * @param {string}
+ * @return {object} returns an sureal.path Object
+ */
+sureal.path = function SurealPath(path) {
   if(typeof path == 'undefined') {
     path = '';
   }
@@ -199,15 +212,16 @@ sureal.path = function Path(path) {
   return that;
 };
 
-sureal.path.is_a = function is_aPath(obj) {
-  if((typeof obj != 'undefined') &&
-     obj.hasOwnProperty('predicate') && 
-     obj.hasOwnProperty('subject') && 
-     obj.hasOwnProperty('position')
-    ) {
-    return true;
+sureal.path.validate = function is_aPath(obj) {
+  if(!obj.hasOwnProperty('subject')) {
+    throw "Invalid SurealPath: missing subject property"
   }
-  return false;
+  if(!obj.hasOwnProperty('predicate')) {
+    throw "Invalid SurealPath: missing prediate property"
+  }
+  if(!obj.hasOwnProperty('identifier')) {
+    throw "Invalid SurealPath: missing identifier property"
+  }
 };
 
 

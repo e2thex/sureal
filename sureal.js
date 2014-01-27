@@ -18,7 +18,7 @@ sureal.rest.request.get = function requestGet(path, queryString) {
   that.identifier = typeof parts[2] !== 'undefined' ? parts[2] : false;
   that.value = that.predicate ? that.predicate : that.subject;
   that.methods = {
-    '1'    : ["DELETE", "GET"], //subject
+    '1'    : ["GET"], //subject
     '2'  : ["GET", "POST"], //predicate 
     '3' : ["DELETE", "GET", "POST", "PUT"] // identifier
   }[parts.length];

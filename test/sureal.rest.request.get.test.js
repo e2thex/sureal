@@ -63,8 +63,8 @@ describe("sureal.rest.request.get", function() {
         restRespose1.children.should.eql([{value:"street", uri:"sam/street"}]);
       });
       it("should return a restResponse with correct methods", function() {
-        restRespose.methods.should.eql(["DELETE", "GET"]);
-        restRespose1.methods.should.eql(["DELETE", "GET"]);
+        restRespose.methods.should.eql(["GET"]);
+        restRespose1.methods.should.eql(["GET"]);
       });
     });
     describe("when created with a subject/attrubute path then its execute method, called with a store object as its argument", function() {

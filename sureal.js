@@ -1,6 +1,13 @@
 sureal = {};
 sureal.rest = {};
 sureal.rest.request = {};
+/**
+ * The Sureal Rest Request Get Object allows for Get request to be executed
+ *
+ * @constructor
+ * @param {string} path : the restful path of the request
+ * @return a sureal.rest.request.get Object
+ */
 sureal.rest.request.get = function requestGet(path, queryString) {
   var that = {}
   //that.path = (typeof path == 'string') ? sureal.path(path) : path;
@@ -86,6 +93,14 @@ sureal.rest.request.get = function requestGet(path, queryString) {
   };
   return that;
 }
+
+/**
+ * The Sureal Rest Request Get Object allows for Get request to be executed
+ *
+ * @constructor
+ * @param {string} path : the restful path of the request
+ * @return a sureal.rest.request.get Object
+ */
 sureal.rest.request.put = function requestGet(path, data) {
   var that = {}
   that.triplet = sureal.path(path);

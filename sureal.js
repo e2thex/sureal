@@ -158,6 +158,30 @@ sureal.rest.response.validate = function responseValidate(response) {
   return response;
 }
 
+sureal.rest.request.delete = function requestGet(path) {
+  var that = {}
+  that.triplet = sureal.path(path);
+  that.execute = function surealRestRequestDelete(store) {
+    var variable = sureal.data.request.instruction.variable();
+    var data = store.update(
+      sureal.data.request.instruction.lookup( 
+        variable.next(),
+        variable.next(),
+        variable.next(),
+        sureal.data.request.instruction.lookupPart("=", this.triplet.identifier, variable)
+      )
+    );
+    return {
+      uri:this.triplet.subject +"/"+this.triplet.predicate+"/"+this.triplet.identifier,
+      value: '',
+      children: [],
+      methods:["DELETE", "GET", "POST", "PUT"]
+    }
+  }
+
+
+  return that;
+}
 
 sureal.path = function Path(path) {
   

@@ -1,3 +1,4 @@
+require("./lib/surealPath.js");
 /**
  * Extend all object with a validate funtion
  */
@@ -7,6 +8,7 @@ Object.prototype.surealValidate = function ObjectPrototypeSurealValidate(validat
 }
 
 sureal = {};
+sureal.path = surealPath();
 sureal.rest = {};
 sureal.rest.request = {};
 /**
@@ -199,41 +201,6 @@ sureal.rest.response.validate = function responseValidate(response) {
   }
   return response;
 }
-
-/**
- * Create a path object
- *
- * @param {string}
- * @return {object} returns an sureal.path Object
- */
-sureal.path = function SurealPath(path) {
-  if(typeof path == 'undefined') {
-    path = '';
-  }
-  else if(typeof path != 'string') {
-    throw "sureal.path only takes a string";
-  }
-  var parts = path.split("/");
-  var that = {};
-  that.predicate = parts[1] ? parts[1] : '';
-  that.subject = parts[0] ? parts[0] : '';
-  that.identifier = parts[2] ? parts[2] : false;
-  return that;
-};
-
-sureal.path.validate = function surealPathValidate(obj) {
-  if(!obj.hasOwnProperty('subject')) {
-    throw "Invalid SurealPath: missing subject property"
-  }
-  if(!obj.hasOwnProperty('predicate')) {
-    throw "Invalid SurealPath: missing prediate property"
-  }
-  if(!obj.hasOwnProperty('identifier')) {
-    throw "Invalid SurealPath: missing identifier property"
-  }
-};
-
-
 
 sureal.data = {}
 sureal.data.request = {}

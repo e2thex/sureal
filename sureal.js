@@ -136,6 +136,40 @@ sureal.rest.request.put = function requestGet(path, data) {
   return that;
 };
 
+sureal.rest.request.delete = function requestGet(path) {
+  var that = {}
+  that.triplet = sureal.path(path);
+  that.execute = function surealRestRequestDelete(store) {
+    var variable = sureal.data.request.instruction.variable();
+    var data = store.update(
+      sureal.data.request.instruction.lookup( 
+        variable.next(),
+        variable.next(),
+        variable.next(),
+        sureal.data.request.instruction.lookupPart("=", this.triplet.identifier, variable)
+      )
+    );
+    return {
+      uri:this.triplet.subject +"/"+this.triplet.predicate+"/"+this.triplet.identifier,
+      value: '',
+      children: [],
+      methods:["DELETE", "GET", "POST", "PUT"]
+    }
+  }
+
+
+  return that;
+}
+/**
+ * A function to validate if a object is a request
+ * @param {object} request : an object to validate as a request
+ */
+sureal.rest.request.validate = function surealRestRequestValidate(request) {
+  if (typeof request.execute !== 'function') {
+    throw "Invalid SurealRestRequest: missing execute method"
+  }
+}
+
 sureal.rest.response = {};
 sureal.rest.response.validate = function responseValidate(response) {
   if(typeof response.uri == 'undefined') {
@@ -166,31 +200,6 @@ sureal.rest.response.validate = function responseValidate(response) {
   return response;
 }
 
-sureal.rest.request.delete = function requestGet(path) {
-  var that = {}
-  that.triplet = sureal.path(path);
-  that.execute = function surealRestRequestDelete(store) {
-    var variable = sureal.data.request.instruction.variable();
-    var data = store.update(
-      sureal.data.request.instruction.lookup( 
-        variable.next(),
-        variable.next(),
-        variable.next(),
-        sureal.data.request.instruction.lookupPart("=", this.triplet.identifier, variable)
-      )
-    );
-    return {
-      uri:this.triplet.subject +"/"+this.triplet.predicate+"/"+this.triplet.identifier,
-      value: '',
-      children: [],
-      methods:["DELETE", "GET", "POST", "PUT"]
-    }
-  }
-
-
-  return that;
-}
-
 /**
  * Create a path object
  *
@@ -212,7 +221,7 @@ sureal.path = function SurealPath(path) {
   return that;
 };
 
-sureal.path.validate = function is_aPath(obj) {
+sureal.path.validate = function surealPathValidate(obj) {
   if(!obj.hasOwnProperty('subject')) {
     throw "Invalid SurealPath: missing subject property"
   }

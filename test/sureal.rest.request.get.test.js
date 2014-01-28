@@ -1,6 +1,20 @@
 sinon = require("sinon");
-describe("sureal.rest.request.is_a", function() {
-  it('should be a function');
+describe("sureal.rest.request.validate", function() {
+  it('should be a function', function() {
+    sureal.rest.request.validate.should.be.type("function");
+  });
+  it('should not throw an error if there is a valid request', function() {
+    var request = sureal.rest.request.delete("bob/sam/123");
+    (function() {
+      sureal.rest.request.validate(request);
+    }).should.not.throw();
+  });
+  it('should throw an exception if is no execute method', function() {
+    var request = {};
+    (function() {
+      sureal.rest.request.validate(request);
+    }).should.throw();
+  });
 });
 describe("sureal.rest.request.get", function() {
   it('should be a function', function() {
@@ -16,7 +30,12 @@ describe("sureal.rest.request.get", function() {
       sureal.rest.request.get("bob/name", '*[."name" = "bob"]');
     }).should.not.throw();
   });
-  describe("'s return object,", function() {
+  it('should return a sureal.rest.request Object', function() {
+    (function() {
+      sureal.rest.request.get("bob/name", '*[."name" = "bob"]').surealValidate(sureal.rest.request.validate);
+    }).should.not.throw();
+  });
+  describe("Object", function() {
     it('should have a execute method', function() {
       var r = sureal.rest.request.get("bob");
       r.execute.should.be.type("function");

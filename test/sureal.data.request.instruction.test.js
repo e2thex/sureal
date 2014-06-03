@@ -1,63 +1,88 @@
-describe("sureal.data.request.instruction", function() {
-  describe(".variable", function() {
-    it("should be a function", function() {
-      sureal.data.request.instruction.variable.should.be.type('function');
+describe("surealInstruction() @module", function() {
+  var inst = surealInstruction();
+  var v = inst.variable();
+  var v2 = v.next();
+  var v3 = v.next();
+  describe("@class SurealInstructionVariable", function() {
+    it("@property {bool} final: Awnsers the question is this the last variable (immutable)", function() {
+      v.should.have.property("final");
+      var a = v.final;
+      v.final = "something else";
+      v.final.should.equal(a);
     });
-    describe("called with no params return object", function() {
-      var v = sureal.data.request.instruction.variable();
-      
-      it("should have property final, that is true", function() {
-        v.should.have.property("final");
-        v.final.should.be.true;
-      });
-      it("should have property name, that is 0", function() {
-        v.should.have.property('name');
-        v.name.should.equal(0);
-        
-      });
-      it("should have method next", function(){
+    it("@property {number} name : the unique id for the variable should be 0 (immutable)", function() {
+      v.should.have.property('name');
+      var a = v.name;
+      v.name = "something else";
+      v.name.should.equal(a);
+    })
+    describe("@method next()", function() {
+      it("should be a function", function(){
         v.next.should.be.type('function');
       });
-      describe("next method return object", function() {
-        var v2 = v.next();
-        it("should have a property name incremented", function() {
+      describe("@return {variable} : next method return object", function() {
+        it("property name should be increment of parent name", function() {
           v2.should.have.property('name');
           v2.name.should.equal(1);
         });
-        it("should have a property final that is false", function() {
+        it("property final that is false", function() {
           v2.final.should.be.false;
         });
-      });
-      describe("next method return object when called a second time", function() {
-        var v3 = v.next();
-        it("should have a property name incremented agian", function() {
-          v3.should.have.property('name');
-          v3.name.should.equal(2)
+        describe("next method return object when called a second time", function() {
+          it("should have a property name incremented agian", function() {
+            v3.should.have.property('name');
+            v3.name.should.equal(2)
+          });
         });
       });
-
     });
   });
-  describe(".lookupPart", function() {
+  describe(".variable() @constructs SurealInstructionVariable", function() {
     it("should be a function", function() {
-      sureal.data.request.instruction.lookupPart.should.be.type('function');
+      inst.variable.should.be.type('function');
     });
-    var v = sureal.data.request.instruction.variable();
-    var p = sureal.data.request.instruction.lookupPart("=", "bob", v);
-    it("should return an object with a operator property matching the first param", function() {
-        p.should.have.property("operator");
+    describe("@return {Variable} : a variable lookupPart", function() {
+      it("final property should be true", function() {
+        v.final.should.be.true;
+
+      });
+      it("name property should be true", function() {
+        v.name.should.equal(0);
+      });
+    });
+  });
+  describe("@class SurealInstructionLookupPart", function() {
+    var v = inst.variable();
+    var p = inst.lookupPart("=", "bob", v);
+    it("@property {string} operator : the type of comparison", function() {
+      p.should.have.property("operator");
+    });
+    it("@property {string} value : the value to compare", function() {
+      p.should.have.property("value");
+    });
+    it("@property {SurealInstrctionVariable} value : the variable to which the campare is associated", function() {
+      p.should.have.property("variable");
+    });
+  });
+  describe(".lookupPart() @constructs", function() {
+    var v = inst.variable();
+    var p = inst.lookupPart("=", "bob", v);
+    it("should be a function", function() {
+      inst.lookupPart.should.be.type('function');
+    });
+    it("@param {string} operator : should became the operator", function() {
         p.operator.should.equal('=');
     });
-    it("should return an object with a value property matching the second param", function() {
-        p.should.have.property("value");
+    it("@param {string} value : should became the value property", function() {
         p.value.should.equal('bob');
     });
-    it("should return an object with a variable property matching the third param", function() {
-        p.should.have.property("variable");
+    it("@param {Variable} variable : should became the variable property", function() {
         p.variable.should.equal(v);
     });
+    it.skip("@return {SurealInstructionLookupPart} : should return a instruction lookup part", function () {
+    });
   });
-  describe(".lookup", function() {
+  describe(".lookup() create a lookup instruction object @constructs", function() {
     it("should be a function", function() {
       sureal.data.request.instruction.lookup.should.be.type('function');
     });
@@ -66,25 +91,27 @@ describe("sureal.data.request.instruction", function() {
     var v2 = v.next();
     var v3 = v.next();
     var l = sureal.data.request.instruction.lookup(v, v1, v2, v3);
-    it("should return an object with a subject property matching the first param", function() {
+    it("@param {instructionItem}  subject: should become the subject property", function() {
       l.should.have.property("subject");
       l.subject.should.eql(v);
     });
-    it("should return an object with a predicate property matching the second param", function() {
+    it("@param {instructionItem} predicate: should become the predicate property", function() {
       l.should.have.property("predicate");
       l.predicate.should.eql(v1);
     });
-    it("should return an object with a object property matching the third param", function() {
+    it("@param {instructionItem} object: should become the object property", function() {
       l.should.have.property("object");
       l.object.should.eql(v2);
     });
-    it("should return an object with a identifier property matching the fourth param", function() {
+    it("@param {instructionItem} identifier: should become the identifier property", function() {
       l.should.have.property("identifier");
       l.identifier.should.eql(v3);
     });
-    it("should return an object with a type property of 'LOOKUP'", function() {
-      l.should.have.property("type");
-      l.type.should.eql("LOOKUP");
+    describe("@return {instruction} : return a instruction object", function() {
+      it("which as a type property of 'LOOKUP'", function() {
+        l.should.have.property("type");
+        l.type.should.eql("LOOKUP");
+      });
     });
   });
 /**  intersectCreation: function(test) {

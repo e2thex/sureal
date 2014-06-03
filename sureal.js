@@ -1,4 +1,5 @@
 require("./lib/surealPath.js");
+require("./lib/surealInstruction.js");
 /**
  * Extend all object with a validate funtion
  */
